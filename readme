@@ -1,0 +1,298 @@
+    # 📚 College Timetable Management System
+
+A comprehensive web application built with Streamlit and PostgreSQL for managing college timetables, tasks, and schedules with intelligent AI-powered features.
+
+## ✨ Features
+
+### 📅 Timetable Management
+- Pre-loaded default weekly schedule with sample data
+- Add, edit, and remove classes
+- Specify subjects, timings, locations, and instructors
+- Color-coded class entries
+- Cancel and reschedule classes
+- Conflict detection
+
+### ✅ Task Management
+- Create custom tasks with detailed information
+- Set priorities (Low, Medium, High, Urgent)
+- Due dates and estimated durations
+- Mark tasks as complete/incomplete
+- Support for recurring tasks
+- Task categorization
+
+### 🤖 Intelligent Scheduling
+- AI-powered automatic task scheduling
+- Suggest alternative time slots when classes are cancelled
+- Detect and resolve scheduling conflicts
+- Optimize task placement based on priority and deadlines
+- Find free time slots efficiently
+
+### 🔔 Notifications System
+- Alerts for cancelled or rescheduled classes
+- Class reminders (15 minutes before)
+- Task deadline notifications
+- Daily schedule summary
+- Overdue task alerts
+- Real-time notification center
+
+### 📊 Dashboard & Analytics
+- Daily and weekly calendar views
+- Interactive timeline visualization
+- Task completion metrics
+- Schedule analytics with charts
+- Today's agenda overview
+- Upcoming deadlines tracker
+
+### 🎨 User Interface
+- Clean, modern design
+- Color-coded entries
+- Intuitive navigation
+- Responsive layout
+- Quick action buttons
+- Drag-and-drop functionality
+
+## 🚀 Installation & Setup
+
+### Prerequisites
+- Python 3.8 or higher
+- PostgreSQL 12 or higher
+- pip package manager
+
+### Step 1: Clone or Download the Project
+
+```bash
+# Create project directory
+mkdir college_timetable_app
+cd college_timetable_app
+```
+
+### Step 2: Set Up PostgreSQL Database
+
+1. **Install PostgreSQL** (if not already installed)
+   - Windows: Download from https://www.postgresql.org/download/windows/
+   - macOS: `brew install postgresql`
+   - Linux: `sudo apt-get install postgresql postgresql-contrib`
+
+2. **Start PostgreSQL Service**
+   ```bash
+   # Windows (as admin)
+   net start postgresql-x64-14
+   
+   # macOS
+   brew services start postgresql
+   
+   # Linux
+   sudo service postgresql start
+   ```
+
+3. **Create Database**
+   ```bash
+   # Login to PostgreSQL
+   psql -U postgres
+   
+   # Create database
+   CREATE DATABASE college_timetable;
+   
+   # Exit
+   \q
+   ```
+
+4. **Run Schema File**
+   ```bash
+   psql -U postgres -d college_timetable -f schema.sql
+   ```
+
+### Step 3: Install Python Dependencies
+
+```bash
+# Create virtual environment (recommended)
+python -m venv venv
+
+# Activate virtual environment
+# Windows:
+venv\Scripts\activate
+# macOS/Linux:
+source venv/bin/activate
+
+# Install requirements
+pip install -r requirements.txt
+```
+
+### Step 4: Configure Database Connection
+
+Edit `config.py` and update the database credentials:
+
+```python
+DB_CONFIG = {
+    'host': 'localhost',
+    'port': '5432',
+    'database': 'college_timetable',
+    'user': 'postgres',
+    'password': 'your_password_here'  # Update this!
+}
+```
+
+**OR** Set environment variables:
+
+```bash
+# Windows
+set DB_HOST=localhost
+set DB_PORT=5432
+set DB_NAME=college_timetable
+set DB_USER=postgres
+set DB_PASSWORD=your_password
+
+# macOS/Linux
+export DB_HOST=localhost
+export DB_PORT=5432
+export DB_NAME=college_timetable
+export DB_USER=postgres
+export DB_PASSWORD=your_password
+```
+
+### Step 5: Run the Application
+
+```bash
+streamlit run app.py
+```
+
+The application will open in your default web browser at `http://localhost:8501`
+
+## 📖 Usage Guide
+
+### Dashboard
+- View today's schedule at a glance
+- See upcoming deadlines
+- Quick metrics for classes and tasks
+- Interactive timeline view
+
+### Weekly Timetable
+1. **View Schedule**: See all classes organized by day
+2. **Add Class**: Fill in the form with class details
+3. **Edit/Delete**: Select a class and modify or remove it
+4. **Cancel**: Mark classes as cancelled with one click
+
+### Task Management
+1. **View Tasks**: Filter by status, priority, or due date
+2. **Add Task**: Create new tasks with all details
+3. **Schedule**: Auto-schedule or manually assign time slots
+4. **Complete**: Mark tasks as done when finished
+
+### Notifications
+- Check notification center for updates
+- Receive alerts for important events
+- Mark notifications as read
+- View notification history
+
+### Settings
+- Configure scheduling preferences
+- Run schedule optimization
+- View analytics and insights
+- Manage system settings
+
+## 🔧 Configuration Options
+
+### Time Slots
+Edit `config.py` to modify available time slots:
+```python
+TIME_SLOTS = ['08:00', '08:30', '09:00', ...]
+```
+
+### Notification Timing
+Adjust reminder timings:
+```python
+NOTIFICATION_SETTINGS = {
+    'class_reminder_minutes': 15,
+    'task_reminder_hours': 24
+}
+```
+
+### Priority Levels
+Customize priority options:
+```python
+PRIORITY_LEVELS = ['Low', 'Medium', 'High', 'Urgent']
+```
+
+## 🗃️ Database Schema
+
+### Tables
+- **users**: User account information
+- **timetable**: Class schedule entries
+- **tasks**: Task management
+- **task_recurrence**: Recurring task patterns
+- **notifications**: System notifications
+
+### Key Features
+- Foreign key relationships
+- Automatic timestamp updates
+- Check constraints for data validity
+- Indexes for performance optimization
+
+## 🐛 Troubleshooting
+
+### Database Connection Issues
+```
+Error: connection refused
+```
+**Solution**: Ensure PostgreSQL is running and credentials are correct
+
+### Port Already in Use
+```
+Error: Address already in use
+```
+**Solution**: Change Streamlit port
+```bash
+streamlit run app.py --server.port 8502
+```
+
+### Import Errors
+```
+ModuleNotFoundError: No module named 'streamlit'
+```
+**Solution**: Install requirements
+```bash
+pip install -r requirements.txt
+```
+
+### Schema Errors
+```
+Error: relation does not exist
+```
+**Solution**: Run schema file
+```bash
+psql -U postgres -d college_timetable -f schema.sql
+```
+
+## 🔒 Security Notes
+
+- Change default database password in production
+- Use environment variables for sensitive data
+- Enable SSL for database connections in production
+- Implement user authentication for multi-user setup
+
+## 🚀 Advanced Features
+
+### Multi-User Support
+The system is designed for easy extension to multi-user:
+- Users table already implemented
+- All queries use user_id parameter
+- Add authentication layer (Streamlit-Auth, etc.)
+
+### Recurring Tasks
+Framework in place for recurring tasks:
+- `task_recurrence` table ready
+- Daily, weekly, monthly patterns supported
+- Extend UI to configure recurrence
+
+### Export/Import
+Add functionality to:
+- Export schedule to PDF/iCal
+- Import classes from CSV
+- Backup and restore data
+
+## 📊 Performance Optimization
+
+- Database indexes on frequently queried columns
+- Connection pooling for multiple users
+- Caching with `@st.cache_data` for read-heavy operations
+- Efficient SQL queries with proper joins
