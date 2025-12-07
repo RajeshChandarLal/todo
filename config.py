@@ -1,13 +1,32 @@
 import os
+from urllib.parse import urlparse
+
+# Parse the DATABASE_URL for Render PostgreSQL
+DATABASE_URL = os.getenv(
+    'DATABASE_URL',
+    'postgresql://college_timetable_user:T2K82stuXhRZkxh2oSYkpdSFQ7G8QmHk@dpg-d4qo2c3e5dus73erpl80-a.virginia-postgres.render.com/college_timetable'
+)
+
+# Parse the URL to extract connection parameters
+url = urlparse(DATABASE_URL)
 
 # Database Configuration
 DB_CONFIG = {
-    'host': os.getenv('DB_HOST', 'localhost'),
-    'port': os.getenv('DB_PORT', '5432'),
-    'database': os.getenv('DB_NAME', 'college_timetable'),
-    'user': os.getenv('DB_USER', 'postgres'),
-    'password': os.getenv('DB_PASSWORD', 'postgres')
+    'host': url.hostname,
+    'port': url.port or 5432,
+    'database': url.path[1:],  # Remove leading '/'
+    'user': url.username,
+    'password': url.password
 }
+
+# Alternative: Direct configuration (uncomment if you prefer this method)
+# DB_CONFIG = {
+#     'host': 'dpg-d4qo2c3e5dus73erpl80-a.virginia-postgres.render.com',
+#     'port': 5432,
+#     'database': 'college_timetable',
+#     'user': 'college_timetable_user',
+#     'password': 'T2K82stuXhRZkxh2oSYkpdSFQ7G8QmHk'
+# }
 
 # Default user ID (for single-user setup)
 DEFAULT_USER_ID = 1
